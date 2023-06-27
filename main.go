@@ -26,9 +26,24 @@ func importance(count int64) string {
 func makeSetCount(conn *dbus.Conn) func(count int64) {
 	panel := conn.Object("i3.status.rs", "/telegram")
 
+	const cache = 100
+
+	var labels [cache]string
+
+	for i := range labels {
+			labels[i] = fmt.Sprintf("%d", i)
+	}
+
 	return func(count int64) {
+		var text string
+
+		if count < cache {
+				text = labels[count]
+		} else {
+				text = fmt.Sprintf("%d", count)
+		}
+
 		color := importance(count)
-		text := fmt.Sprintf("%d", count)
 
 		call := panel.Call("i3.status.rs.SetStatus", 0, text, "bell", color)
 
