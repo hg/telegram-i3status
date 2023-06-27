@@ -8,7 +8,9 @@
 static char label_cache[100][sizeof("99")];
 
 static void init_label_cache(void) {
-  for (size_t i = 0; i < ARRAY_SIZE(label_cache); ++i) {
+  label_cache[0][0] = '\0';
+
+  for (size_t i = 1; i < ARRAY_SIZE(label_cache); ++i) {
     snprintf(label_cache[i], sizeof(label_cache[0]), "%ld", i);
   }
 }
